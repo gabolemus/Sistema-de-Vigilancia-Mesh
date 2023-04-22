@@ -5,14 +5,14 @@ TARGET = main
 TARGET_NAME = mesh-net-surveillance
 
 all: ./src/$(TARGET).cpp
-	if [ ! -d "./build" ]; then mkdir ./build; fi
-	$(CC) $(CPPFLAGS) ./src/*.cpp -o ./build/$(TARGET_NAME)
+	if [ ! -d "../exe" ]; then mkdir ../exe; fi
+	$(CC) $(CPPFLAGS) ./src/*.cpp -o ../exe/$(TARGET_NAME)
 
 run:
-	./build/$(TARGET_NAME)
+	../exe/$(TARGET_NAME)
 
 clean:
-	rm -f ./build/$(TARGET_NAME)
+	rm -f ../exe/$(TARGET_NAME)
 
 dbg:
 	$(CC) $(CPPFLAGS) $(DEBUGFLAGS) ./src/*.cpp -o ./debug/$(TARGET_NAME)_debug
