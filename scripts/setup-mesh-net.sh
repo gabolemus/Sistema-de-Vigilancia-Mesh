@@ -11,7 +11,7 @@ sudo iw $IFACE set type ibss
 sudo ifconfig $IFACE mtu 1532
 sudo iwconfig $IFACE channel 1
 sudo ip link set $IFACE up
-sudo iw $IFACE ibss join "sistemas-inalambricos" 2432 fixed-freq 02:11:22:33:44:55 cell 1
+sudo iw $IFACE ibss join sistemas-inalambricos 2432
 
 # BATMAN-ADV configuration
 sudo modprobe batman-adv
