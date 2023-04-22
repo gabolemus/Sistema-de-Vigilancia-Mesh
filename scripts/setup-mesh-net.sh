@@ -8,8 +8,6 @@ sudo systemctl mask wpa_supplicant
 # Setup the ad-hoc network
 sudo ip link set $IFACE down
 sudo iw $IFACE set type ibss
-sudo iw $IFACE set bitrates legacy-2.4 12
-sudo iw $IFACE set power_save off
 sudo ifconfig $IFACE mtu 1532
 sudo iwconfig $IFACE channel 1
 sudo ip link set $IFACE up
