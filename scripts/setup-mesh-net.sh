@@ -11,7 +11,7 @@ sudo iw $IFACE set type ibss
 sudo ifconfig $IFACE mtu 1532
 sudo iwconfig $IFACE channel 1
 sudo ip link set $IFACE up
-sudo iw $IFACE ibss join sistemas-inalambricos 2432
+sudo iw $IFACE ibss join sistemas-inalambricos 2432 HT20 fixed-freq 02:12:34:56:78:9A
 
 # BATMAN-ADV configuration
 sudo modprobe batman-adv
