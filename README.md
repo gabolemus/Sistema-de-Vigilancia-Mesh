@@ -6,7 +6,10 @@ Proyecto de sistema de video vigilancia empleando una red mesh ad-hoc con el pro
 
 ## Archivos y Directorios
 
+- [`public/`](public/): Directorio con los archivos públicos del sistema (React).
 - [`scripts/`](scripts/): Directorio con los scripts de configuración y ejecución del sistema.
+- [`src/`](src/): Directorio con los archivos fuente del sistema (React).
+- [`src-net/`](src-net/): Directorio con los archivos fuente del sistema (C++).
 
 ## Requerimientos
 
