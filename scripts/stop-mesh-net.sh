@@ -9,4 +9,3 @@ sudo ip link set $IFACE up
 # Restore the original configuration
 sudo systemctl unmask wpa_supplicant
 sudo systemctl start wpa_supplicant
-# sudo update-rc.d dhcpcd enable
