@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Nombre de la interfaz de red (wlp2s0, wlan0, eth0, etc)
 IFACE=wlp2s0
 
