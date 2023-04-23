@@ -61,6 +61,4 @@ void MeshNode::stopMeshNode() {
 MeshNode::~MeshNode() {
   // Cerrar el socket
   close(this->sockfd);
-
-  printf("Puerto cerrado.\n");
 }
