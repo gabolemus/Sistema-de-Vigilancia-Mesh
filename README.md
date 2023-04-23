@@ -26,3 +26,25 @@ Instalación de paquetes de desarrollo y herramientas de networking
 ```bash
 sudo apt install -y batctl iw gcc g++ gdb make cmake
 ```
+
+Instalación de paquetes de NPM
+
+```bash
+npm install
+```
+
+2. Correr la app de C++
+
+Este programa se encarga de establecer la red mesh y de enviar el feed de las webcams a los nodos de la red.
+
+```bash
+npm run start-net
+```
+
+3. Correr la app de React
+
+Esta aplicación se encarga de mostrar el feed de las webcams.
+
+```bash
+npm run start
+```

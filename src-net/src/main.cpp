@@ -1,31 +1,67 @@
 #include <csignal>
+#include <string>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+
+#include "../include/MeshNode.hpp"
+
+using namespace std;
+
+// Constantes globales
+MeshNode meshNode;
 
 void signalInterruptionHandler(int signum) {
-  // Ejecutar el script para detener la red mesh
-  std::cout << "Deteniendo red mesh..." << std::endl;
-  system("./scripts/stop-mesh-net.sh");
-  std::cout << "Red mesh terminada." << std::endl;
+  // Imprimir caracter de borrado de línea
+  printf("\n\033[1A\033[2K");
+
+  // Detener el nodo en la red mesh
+  // meshNode.stopMeshNode();
 
   exit(signum == SIGINT ? 0 : 1);
 }
 
 int main() {
-  // Registrar el manejador de señales
+  // Registrar el manejador de la señal SIGINT para detener la red mesh
   signal(SIGINT, signalInterruptionHandler);
 
-  // Ejecutar el script de configuración de la red mesh
-  std::cout << "Estableciendo red mesh..." << std::endl;
-  system("./scripts/setup-mesh-net.sh");
-  std::cout << "Red mesh establecida." << std::endl;
+  int port = 8080;
+  string group = "ff02::1";
+  string message = "Hola, desde el nodo en la red mesh!";
+  int sockfd = socket(AF_INET6, SOCK_DGRAM, 0); // Crear el socket UDP IPv6
+  struct sockaddr_in6 addr;
 
-  // Esperar hasta que se presione Ctrl+C
-  while (true) {
-    std::cout << "Presione Ctrl+C cuando desee detener la red mesh." << std::endl;
-    sleep(5);
-  }
+  // Ejecutar el script de configuración de la red mesh
+  printf("Estableciendo red mesh...\n\n");
+  system("./scripts/setup-mesh-net.sh");
+  printf("Red mesh establecida.\n\n");
+  printf("Presione Ctrl+C para detener la red mesh.\n");
+
+  memset(&addr, 0, sizeof(addr));
+  addr.sin6_family = AF_INET6;
+  addr.sin6_port = htons(port);
+  inet_pton(AF_INET6, group.c_str(), &addr.sin6_addr);
+
+  // Enviar mensaje a todos los nodos en la red mesh
+  printf("Enviando mensaje a todos los nodos en la red mesh...\n");
+  sendto(sockfd, message.c_str(), message.length(), 0, (struct sockaddr *)&addr, sizeof(addr));
+  printf("Mensaje enviado.\n");
+
+  // Esperar hasta recibir un mensaje de otro nodo en la red mesh
+  char buffer[1024];
+  struct sockaddr_in6 src_addr;
+  socklen_t src_addr_len = sizeof(src_addr);
+  recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&src_addr, &src_addr_len);
+
+  printf("Mensaje recibido: %s", buffer);
+
+  // Ejecutar el script para detener la red mesh
+  printf("\nDeteniendo red mesh...\n");
+  system("./scripts/stop-mesh-net.sh");
+  printf("\nRed mesh detenida.\n");
 
   return 0;
 }
