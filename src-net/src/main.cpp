@@ -34,6 +34,12 @@ int main() {
   int sockfd = socket(AF_INET6, SOCK_DGRAM, 0); // Crear el socket UDP IPv6
   struct sockaddr_in6 addr;
 
+  // Ejecutar el script de configuración de la red mesh
+  printf("Estableciendo red mesh...\n\n");
+  system("./scripts/setup-mesh-net.sh");
+  printf("Red mesh establecida.\n\n");
+  printf("Presione Ctrl+C para detener la red mesh.\n");
+
   memset(&addr, 0, sizeof(addr));
   addr.sin6_family = AF_INET6;
   addr.sin6_port = htons(port);
@@ -51,6 +57,11 @@ int main() {
   recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&src_addr, &src_addr_len);
 
   printf("Mensaje recibido: %s", buffer);
+
+  // Ejecutar el script para detener la red mesh
+  printf("\nDeteniendo red mesh...\n");
+  system("./scripts/stop-mesh-net.sh");
+  printf("\nRed mesh detenida.\n");
 
   return 0;
 }
