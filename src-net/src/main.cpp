@@ -19,7 +19,7 @@ void signalInterruptionHandler(int signum) {
   printf("\n\033[1A\033[2K");
 
   // Detener el nodo en la red mesh
-  meshNode.stopMeshNode();
+  // meshNode.stopMeshNode();
 
   exit(signum == SIGINT ? 0 : 1);
 }
