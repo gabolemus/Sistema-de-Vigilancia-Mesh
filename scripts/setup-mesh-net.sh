@@ -27,4 +27,7 @@ sudo iw "$iface" ibss join "$ssid" 2432 HT20 fixed-freq 02:12:34:56:78:9A
 sudo modprobe batman-adv
 sudo batctl if add "$iface"
 sudo ip link set bat0 up
-sudo ifconfig bat0
+sudo ifconfig bat0 192.168.1.1 netmask 255.255.255.0
+
+# Configuración de direcciones IP estáticas
+sudo ifconfig "$iface" 192.168.1.2 netmask 255.255.255.0
