@@ -5,7 +5,7 @@ set -e
 
 # Constantes
 iface="wlp2s0" # Nombre de la interfaz de red (wlp2s0, wlan0, eth0, etc)
-channel="1"
+channel="3"
 ssid="sistemas-inalambricos"
 mtu="1532"
 
