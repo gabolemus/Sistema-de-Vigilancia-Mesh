@@ -1,24 +1,30 @@
 #!/bin/bash
 
-# Nombre de la interfaz de red (wlp2s0, wlan0, eth0, etc)
-IFACE=wlp2s0
+# Detener el script si ocurre un error
+set -e
 
-# Detener los servicios de red DHCP y WPA
+# Constantes
+iface="wlp2s0" # Nombre de la interfaz de red (wlp2s0, wlan0, eth0, etc)
+channel="1"
+ssid="sistemas-inalambricos"
+mtu="1532"
+
+# Detener los servicios de red WPA
 # Estos servicios interfieren con la configuración de la red
 sudo systemctl stop wpa_supplicant
 sudo systemctl mask wpa_supplicant
 
 # Configuración de la red mesh ad-hoc
-sudo ip link set $IFACE down
-sudo iw $IFACE set type ibss
-sudo ifconfig $IFACE mtu 1532
-sudo iwconfig $IFACE channel 1
-sudo ip link set $IFACE up
+sudo ip link set "$iface" down
+sudo iw "$iface" set type ibss
+sudo ifconfig "$iface" mtu "$mtu"
+sudo iwconfig "$iface" channel "$channel"
+sudo ip link set "$iface" up
 # TODO: configurar la celda para poder conectarse a una red mesh existente
-sudo iw $IFACE ibss join sistemas-inalambricos 2432 HT20 fixed-freq 02:12:34:56:78:9A
+sudo iw "$iface" ibss join "$ssid" 2432 HT20 fixed-freq 02:12:34:56:78:9A
 
 # Configuración BATMAN-ADV
 sudo modprobe batman-adv
-sudo batctl if add $IFACE
+sudo batctl if add "$iface"
 sudo ip link set bat0 up
 sudo ifconfig bat0
