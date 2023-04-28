@@ -3,14 +3,25 @@
 # Detener el script si ocurre un error
 set -e
 
-# Constantes
-iface="wlp2s0" # Nombre de la interfaz de red (wlp2s0, wlan0, eth0, etc)
+# Obtener las variables de entorno locales
+# Si no está definida la variable $iface o no existe el archivo .env.local, salir
+if [ -f .env.local ]; then
+  source .env.local
+else
+  echo "No existe el archivo .env.local. Por favor, cree uno a partir del archivo .env.example"
+  exit 1
+fi
+
+if [ -z "$iface" ]; then
+  echo "La variable \$iface no está definida. Por favor, especifíquela en el archivo .env.local"
+  exit 1
+fi
 
 # Detener la red mesh
-sudo ip link set "$iface" down
-sudo iw "$iface" set type managed
-sudo ip link set "$iface" up
+ip link set "$iface" down
+iw "$iface" set type managed
+ip link set "$iface" up
 
 # Restaurar los servicios de red WPA
-sudo systemctl unmask wpa_supplicant
-sudo systemctl start wpa_supplicant
+systemctl unmask wpa_supplicant
+systemctl start wpa_supplicant
