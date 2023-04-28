@@ -33,7 +33,11 @@ Instalación de paquetes de NPM
 npm install
 ```
 
-2. Correr la app de C++
+2. Copiar y renombrar el archivo `.env.example` a `.env.local`
+
+Después de copiar el archivo, es necesario modificar la variable `$iface` al nombre de la interfaz de red que se utilizará para la red mesh.
+
+3. Correr la app de C++
 
 Este programa se encarga de establecer la red mesh y de enviar el feed de las webcams a los nodos de la red.
 
@@ -41,7 +45,7 @@ Este programa se encarga de establecer la red mesh y de enviar el feed de las we
 npm run start-net
 ```
 
-3. Correr la app de React
+4. Correr la app de React
 
 Esta aplicación se encarga de mostrar el feed de las webcams.
 
