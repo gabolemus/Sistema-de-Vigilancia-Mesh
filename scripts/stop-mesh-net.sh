@@ -23,5 +23,6 @@ iw "$iface" set type managed
 ip link set "$iface" up
 
 # Restaurar los servicios de red WPA
+systemctl restart NetworkManager
 systemctl unmask wpa_supplicant
 systemctl start wpa_supplicant
