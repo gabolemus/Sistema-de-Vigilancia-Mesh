@@ -26,28 +26,31 @@ fi
 systemctl stop wpa_supplicant
 systemctl mask wpa_supplicant
 
+# Detener la interfaz WiFi
+ifconfig "$iface" down
+
 # Asegurarse de que el módulo del kernel batman-adv está cargado
 modprobe batman-adv
 echo "batman-adv" | tee --append /etc/modules
 
 # Detener el servicio DHCP
-echo "denyinterfaces $iface" | tee --append /etc/dhcpcd.conf
+echo "denyinterfaces mesh0" | tee --append /etc/dhcpcd.conf
 
 # Configuración de la interfaz que batman-adv usará
-batctl if add "$iface"
+batctl if add mesh0
 ifconfig bat0 mtu "$mtu"
 
 # Indicarle a batman-adv que este es un cliente gateway
 batctl gw_mode client
 
-# Configuración de la red mesh ad-hoc
-ip link set "$iface" down
-iw "$iface" set type ibss
-ifconfig "$iface" mtu "$mtu"
-iwconfig "$iface" channel "$channel"
-ip link set "$iface" up
-iw "$iface" ibss join "$ssid" 2432 HT40+ fixed-freq 02:12:34:56:78:9A
+# # Configuración de la red mesh ad-hoc
+# ip link set mesh0 down
+# iw mesh0 set type ibss
+# ifconfig mesh0 mtu "$mtu"
+# iwconfig mesh0 channel "$channel"
+# ip link set mesh0 up
+# iw mesh0 ibss join "$ssid" 2432 HT40+ fixed-freq 02:12:34:56:78:9A
 
 # Establecer las interfaces
-ifconfig "$iface" up
+ifconfig mesh0 up
 ifconfig bat0 up
