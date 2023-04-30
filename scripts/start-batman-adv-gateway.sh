@@ -65,7 +65,7 @@ iw $iface set type ibss
 ifconfig $iface mtu "$mtu"
 iwconfig $iface channel "$channel"
 ip link set $iface up
-iw $iface ibss join "$ssid"
+iw $iface ibss join "$ssid" 2432 HT40+ fixed-freq 02:12:34:56:78:9A
 
 # Establecer las interfaces
 ifconfig $iface up
