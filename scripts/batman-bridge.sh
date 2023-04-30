@@ -5,6 +5,7 @@
 # https://www.irif.univ-paris-diderot.fr/~jch/software/files/wifi-autoconf.sh
 
 essid="sistemas-inalambricos"
+bssid="02:12:34:56:78:9A"
 channel=1
 ipaddress=192.168.1.1
 
@@ -53,7 +54,7 @@ interface="$1"
 ifconfig "$interface" down || die "Couldn't configure interface"
 iwconfig "$interface" mode ad-hoc || die "Couldn't configure interface"
 ifconfig "$interface" up || die "Couldn't configure interface"
-iwconfig "$interface" essid "$essid" channel $channel || \
+iwconfig "$interface" essid "$essid" channel "$channel" ap "$bssid" || \
 	die "Couldn't configure interface"
 
 ip link set up dev "$interface" || die "Couldn't up interface"
