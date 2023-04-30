@@ -18,9 +18,7 @@ if [ -z "$iface" ]; then
 fi
 
 # Detener la red mesh
-# ip link set "$iface" down
-ip link set mesh0 down
-iw mesh0 del
+ip link set "$iface" down
 iw "$iface" set type managed
 ip link set "$iface" up
 
