@@ -4,7 +4,7 @@
 set -e
 
 # Constantes
-channel="1"
+channel="9"
 ssid="sistemas-inalambricos"
 mtu="1532"
 
@@ -28,25 +28,15 @@ systemctl stop wpa_supplicant
 systemctl mask wpa_supplicant
 systemctl stop NetworkManager
 
-# Eliminar la interfaz de red
-iw dev $iface del
+ip link set $iface down #e.g. $iface = wlan0
+iw $iface set type ibss
+ifconfig $iface mtu 1532 # This is necessary for batman-adv
+iwconfig $iface channel $channel
+ip link set $iface up
+iw $iface ibss join $ssid 2452 # e.g. <ssid> = my-mesh-network
 
-# Crear la interfaz de red
-iw phy phy0 interface add $iface type ibss
-
-# Configurar MTU
-ip link set up mtu $mtu dev $iface
-
-# Deshabilitar el modo de ahorro de energía y la encriptación
-# iwconfig $iface power off
-iwconfig $iface enc off
-
-# Crear/unirse a la red mesh
-iw dev $iface ibss join $ssid 2412 HT20 fixed-freq 02:12:34:56:78:9A
-
-# Agregar la interfaz a la red mesh
-batctl if add $iface
+modprobe batman-adv
+batctl if add $iface # e.g. $iface = wlan0
+ip link set up dev $iface
 ip link set up dev bat0
-
-# Configuración de la dirección IP
-ifconfig $iface 192.168.2.2/24
+ifconfig bat0 172.27.0.1/16 # Can be any other valid IP.
